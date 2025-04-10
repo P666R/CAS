@@ -1,24 +1,39 @@
 import 'dotenv/config';
 import express from 'express';
+import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import { Logger } from '@/global/logging/logger';
 import { env } from '@/global/config/env/env.config';
 import { ErrorHandler } from '@/global/errors/handler.error';
+import { InternalServerError } from './global/errors/custom.error';
+import { appRoutes } from './global/routes/app.route';
 
 export class Server {
   private readonly app: express.Application;
-  private readonly logger = Logger.getInstance().getLogger();
+  private readonly logger = Logger.getInstance().createChildLogger({
+    service: 'Server',
+  });
   private readonly errorHandler = ErrorHandler.getInstance();
 
   constructor() {
     this.app = express();
   }
 
-  public start() {
+  public async start() {
     this.setupMiddlewares();
     this.setupRoutes();
     this.setupGlobalErrorMiddleware();
-    this.listenServer();
+    await this.listenServer();
+  }
+
+  private async connectToDatabase() {
+    try {
+      await mongoose.connect(env.DATABASE_URL);
+      this.logger.info('Mongoose connected to MongoDB');
+    } catch (error: unknown) {
+      this.logger.error({ error }, 'Failed to connect to MongoDB');
+      throw new InternalServerError('Failed to connect to MongoDB', { error });
+    }
   }
 
   private setupMiddlewares() {
@@ -27,11 +42,7 @@ export class Server {
   }
 
   private setupRoutes() {
-    this.app.get('/', (_req, res) => {
-      res.status(200).json({
-        message: 'Welcome to Content Approval API',
-      });
-    });
+    appRoutes(this.app);
   }
 
   private setupGlobalErrorMiddleware() {
@@ -41,7 +52,8 @@ export class Server {
     });
   }
 
-  private listenServer() {
+  private async listenServer() {
+    await this.connectToDatabase();
     this.app.listen(env.PORT, () => {
       this.logger.info(`Server running on port ${env.PORT}`);
     });

@@ -43,7 +43,7 @@ export class Logger {
             },
           }),
     });
-    this.logger.info(`Logger initialized in ${env.NODE_ENV} mode with level ${env.LOG_LEVEL}`);
+    this.logger.child({ service: 'Logger' }).info('Logger initialized');
   }
 
   public static getInstance(): Logger {

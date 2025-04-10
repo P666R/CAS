@@ -1,4 +1,4 @@
-import { cleanEnv, port, str } from 'envalid';
+import { cleanEnv, num, port, str } from 'envalid';
 
 export const env = cleanEnv(process.env, {
   NODE_ENV: str({
@@ -19,4 +19,6 @@ export const env = cleanEnv(process.env, {
     default: 'info',
     desc: 'Log level',
   }),
+  JWT_SECRET: str({ desc: 'JWT secret key' }),
+  JWT_EXPIRES_IN: num({ default: 86400, desc: 'JWT expires in' }),
 });

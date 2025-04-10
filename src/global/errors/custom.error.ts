@@ -1,10 +1,11 @@
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
+import { ZodErrorDetail } from '@/global/middlewares/requestValidator.middleware';
 
 interface ErrorDetail {
   [key: string]: unknown;
 }
 
-export type ErrorDetails = ErrorDetail | undefined;
+export type ErrorDetails = ErrorDetail | ZodErrorDetail | undefined;
 
 export class CustomError extends Error {
   constructor(
