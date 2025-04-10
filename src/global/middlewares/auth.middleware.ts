@@ -1,10 +1,10 @@
 import express from 'express';
 import { catchAsync } from '@/global/utils/catchAsync.util';
 import { AuthService } from '@/features/user/services/auth.service';
-import { UserRole } from '@/features/user/interfaces/user.interface';
 import { TypedRequest } from '@/global/interfaces/request.interface';
 import { UserRepository } from '@/features/user/repositories/user.repository';
 import { ForbiddenError, UnauthorizedError } from '@/global/errors/custom.error';
+import { CurrentUser, UserRole } from '@/features/user/interfaces/user.interface';
 
 export class AuthMiddleware {
   constructor(
@@ -26,11 +26,11 @@ export class AuthMiddleware {
       }
 
       req.currentUser = {
-        id: user.id as string,
+        id: user._id.toString(),
         username: user.username,
         email: user.email,
         role: user.role,
-      };
+      } as CurrentUser;
       next();
     },
   );

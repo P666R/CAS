@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs';
 import validator from 'validator';
-import { Schema, model } from 'mongoose';
+import mongoose from 'mongoose';
 import { IUser, UserRole } from '@/features/user/interfaces/user.interface';
 
-const userSchema = new Schema<IUser>(
+const userSchema = new mongoose.Schema<IUser>(
   {
     username: {
       type: String,
@@ -48,8 +48,7 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
-  const isMatch = await bcrypt.compare(candidatePassword, this.password as string);
-  return isMatch;
+  return await bcrypt.compare(candidatePassword, this.password as string);
 };
 
-export const User = model<IUser>('User', userSchema);
+export const User = mongoose.model<IUser>('User', userSchema);

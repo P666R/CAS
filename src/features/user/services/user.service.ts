@@ -1,5 +1,5 @@
 import { Logger } from '@/global/logging/logger';
-import { SignupDTO } from '@/features/user/schemas/user.schema';
+import { CreateSignupDTO } from '@/features/user/schemas/user.schema';
 import { UserRepository } from '@/features/user/repositories/user.repository';
 import { BadRequestError, InternalServerError } from '@/global/errors/custom.error';
 
@@ -10,7 +10,7 @@ export class UserService {
 
   constructor(private readonly userRepository: UserRepository) {}
 
-  public async createUser(requestBody: SignupDTO) {
+  public async createUser(requestBody: CreateSignupDTO) {
     const isExistingUser = await this.userRepository.findUserByEmail(requestBody.email);
     if (isExistingUser) {
       this.logger.warn({ email: requestBody.email }, 'User with email already exists');

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { UserRole } from '@/features/user/interfaces/user.interface';
 import validator from 'validator';
 
-export const signupSchema = z
+export const createSignupSchema = z
   .object({
     username: z.string().nonempty('Username is required').trim().min(3, 'Username must be at least 3 characters'),
     email: z.string().nonempty('Email is required').trim().email('Invalid email').toLowerCase(),
@@ -18,7 +18,7 @@ export const signupSchema = z
   })
   .strict();
 
-export const loginSchema = signupSchema.pick({ email: true, password: true }).strict();
+export const createLoginSchema = createSignupSchema.pick({ email: true, password: true }).strict();
 
-export type SignupDTO = z.infer<typeof signupSchema>;
-export type LoginDTO = z.infer<typeof loginSchema>;
+export type CreateSignupDTO = z.infer<typeof createSignupSchema>;
+export type CreateLoginDTO = z.infer<typeof createLoginSchema>;
