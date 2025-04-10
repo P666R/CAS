@@ -16,11 +16,11 @@ export class UserController {
   public createUser = catchAsync(
     async (req: TypedRequest<SignupDTO>, res: express.Response, _next: express.NextFunction) => {
       const user = await this.userService.createUser(req.body);
-      this.logger.info({ userId: user.id }, 'User created successfully');
+      this.logger.info({ userId: user.id as string }, 'User created successfully');
       res.status(StatusCodes.CREATED).json({
         success: true,
         data: {
-          id: user.id,
+          id: user.id as string,
           username: user.username,
           email: user.email,
           role: user.role,
@@ -34,7 +34,7 @@ export class UserController {
   public getUserById = catchAsync(
     async (req: TypedRequest<unknown>, res: express.Response, _next: express.NextFunction) => {
       const user = await this.userService.getUserById(req.params.id);
-      this.logger.info({ userId: user.id }, 'User fetched successfully');
+      this.logger.info({ userId: user.id as string }, 'User fetched successfully');
       res.status(StatusCodes.OK).json({
         success: true,
         data: user,

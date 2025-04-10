@@ -11,7 +11,6 @@ export const env = cleanEnv(process.env, {
     desc: 'Port',
   }),
   DATABASE_URL: str({
-    default: 'mongodb://localhost:27017',
     desc: 'MongoDB database URL',
   }),
   LOG_LEVEL: str({

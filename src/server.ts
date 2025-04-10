@@ -23,7 +23,8 @@ export class Server {
     this.setupMiddlewares();
     this.setupRoutes();
     this.setupGlobalErrorMiddleware();
-    await this.listenServer();
+    await this.connectToDatabase();
+    this.listenServer();
   }
 
   private async connectToDatabase() {
@@ -52,8 +53,7 @@ export class Server {
     });
   }
 
-  private async listenServer() {
-    await this.connectToDatabase();
+  private listenServer() {
     this.app.listen(env.PORT, () => {
       this.logger.info(`Server running on port ${env.PORT}`);
     });

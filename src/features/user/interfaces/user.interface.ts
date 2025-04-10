@@ -22,7 +22,3 @@ export interface CurrentUser {
   email: string;
   role: UserRole;
 }
-
-export interface AuthenticatedRequest extends Request {
-  currentUser?: CurrentUser;
-}

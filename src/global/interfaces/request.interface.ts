@@ -1,5 +1,7 @@
-import express from 'express';
+import { Request } from 'express';
+import { CurrentUser } from '@/features/user/interfaces/user.interface';
 
-export interface TypedRequest<T> extends express.Request {
+export interface TypedRequest<T> extends Request {
   body: T;
+  currentUser?: CurrentUser;
 }
