@@ -1,12 +1,10 @@
 import 'dotenv/config';
 import express from 'express';
-import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import { Logger } from '@/global/logging/logger';
 import { env } from '@/global/config/env/env.config';
-import { ErrorHandler } from '@/global/errors/handler.error';
-import { InternalServerError } from './global/errors/custom.error';
 import { appRoutes } from './global/routes/app.route';
+import { ErrorHandler } from '@/global/errors/handler.error';
 
 export class Server {
   private readonly app: express.Application;
@@ -19,22 +17,11 @@ export class Server {
     this.app = express();
   }
 
-  public async start() {
+  public start() {
     this.setupMiddlewares();
     this.setupRoutes();
     this.setupGlobalErrorMiddleware();
-    await this.connectToDatabase();
     this.listenServer();
-  }
-
-  private async connectToDatabase() {
-    try {
-      await mongoose.connect(env.DATABASE_URL);
-      this.logger.info('Mongoose connected to MongoDB');
-    } catch (error: unknown) {
-      this.logger.error({ error }, 'Failed to connect to MongoDB');
-      throw new InternalServerError('Failed to connect to MongoDB', { error });
-    }
   }
 
   private setupMiddlewares() {

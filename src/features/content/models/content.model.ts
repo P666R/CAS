@@ -1,12 +1,7 @@
 import mongoose from 'mongoose';
+import { ContentStatus, IContent } from '../interfaces/content.interface';
 
-export enum ContentStatus {
-  PENDING = 'pending',
-  APPROVED = 'approved',
-  REJECTED = 'rejected',
-}
-
-const contentSchema = new mongoose.Schema(
+const contentSchema = new mongoose.Schema<IContent>(
   {
     title: {
       type: String,
@@ -31,9 +26,13 @@ const contentSchema = new mongoose.Schema(
     },
     rejectionReason: {
       type: String,
+      trim: true,
+      default: null,
     },
   },
   {
     timestamps: true,
   },
 );
+
+export const Content = mongoose.model<IContent>('Content', contentSchema);
