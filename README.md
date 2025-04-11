@@ -15,13 +15,14 @@ A Node.js/Express backend for a content approval system where users can submit c
   - Input validation using Zod schemas.
   - Protected routes with middleware for authentication (protect) and authorization (restrictTo).
   - Password hashing with bcrypt.
-  - Mongoose schema validation using validator
+  - Mongoose schema validation using mongoose built-in validator and validator library.
 - **Production-Grade Practices**:
   - TypeScript for type safety.
   - Structured error handling with custom error classes.
   - Logging with Pino (pretty-printed in development, JSON in production).
   - ESLint and Prettier for code quality.
   - Class-based dependency injection.
+  - Feature based and layered architecture.
 
 ## Tech Stack
 
@@ -30,7 +31,9 @@ A Node.js/Express backend for a content approval system where users can submit c
 - **Language**: TypeScript
 - **Database**: MongoDB, Mongoose
 - **Authentication**: JWT, bcrypt
-- **Validation**: Zod
+- **Validation**: Zod, validator
+- **Environment Management**: dotenv, envalid
+- **Error Handling**: serialize-error
 - **Logging**: Pino
 - **Dev Tools**: ESLint, Prettier, Husky, nodemon, ts-node
 
